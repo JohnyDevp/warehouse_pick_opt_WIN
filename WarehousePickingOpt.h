@@ -341,7 +341,7 @@ private:
     float depth;
 
 public:
-    CartShelf(float width, float height = 999999.9, float depth = 999999.9);
+    CartShelf(float width, float height = 99999999.9, float depth = 99999999.9);
 
     void addBox_oneItemized(Box box);
 
@@ -408,6 +408,7 @@ public:
     void addToRealQty(int qty_to_add);
     int getRealQty();
 
+    int order = 1;
     OItem getOItem() const;
 };
 
@@ -450,6 +451,10 @@ public:
     /// @return boolean according to the whether the customer fit the free space in cart or not
     bool loadCustomer(SolverConfiguration &sc, Customer &customer, bool can_be_partly_loaded = false, vector<Box> *non_loaded_boxes = NULL);
 
+    /// @brief no check, the customer is load by force, even if it doesn't fit
+    /// @attention it is recomended to firstly try loadCustomer to get real-view
+    void forceLoadCustomer(Customer &customer);
+
     /// @brief getter for whole free space on cart
     /// @return
     float getCartFreeSpace();
@@ -490,7 +495,7 @@ private:
     float used_capacity = 0;
 
     /// @brief vector of items which are not neccessary all OItems
-    map<int, BoxItem> product_boxitem_map;
+    multimap<int, BoxItem> product_boxitem_map;
 
 public:
     /// @brief usable capacity in percentage
@@ -518,7 +523,7 @@ public:
     float getUsedCapacity();
 
     /// @return map of <Product,BoxItems> that represents Product's units in the box
-    map<int, BoxItem> getItemsInTheBox();
+    multimap<int, BoxItem> getItemsInTheBox();
 
     /// @brief function for adding item to box
     /// @warning it is without any check
